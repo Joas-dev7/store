@@ -19,6 +19,10 @@ class Product extends Model
         'images'
     ];
 
+    protected $casts = [
+        'images' => 'array',
+    ];
+
     /**
      * Get the user that owns the Category
      *
