@@ -2,46 +2,40 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Panier;
-use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Product extends Model
+class Commande extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'category_id',
-        'name',
-        'description',
-        'price',
-        'images'
-    ];
-
-    protected $casts = [
-        'images' => 'array',
+        'user_id',
+        'numero',
+        'total'
     ];
 
     /**
-     * Get the user that owns the Category
+     * Get the user that owns the Commande
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function category(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * Get all of the panier for the Product
+     * Get all of the paniers for the Commande
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function paniers(): HasMany
     {
-        return $this->haMany(Panier::class);
+        return $this->hasMany(Panier::class);
     }
 }
