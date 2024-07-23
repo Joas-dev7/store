@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PanierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FavoriteController;
 
 //route gestion du panier
@@ -37,6 +38,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// commande
+Route::middleware('auth')->group(function () {
+    Route::get('/commande', [CommandeController::class, 'index'])->name('commande.lister');
+    Route::get('/commande/create', [CommandeController::class, 'create'])->name('commande.create');
+    Route::get('/commande/success', [CommandeController::class, 'success'])->name('commande.success');
 });
 
 require __DIR__.'/auth.php';
