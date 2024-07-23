@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Panier;
 use App\Models\Category;
+use App\Models\Favorite;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,5 +44,15 @@ class Product extends Model
     public function paniers(): HasMany
     {
         return $this->haMany(Panier::class);
+    }
+
+    /**
+     * Get all of the favorites for the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
     }
 }

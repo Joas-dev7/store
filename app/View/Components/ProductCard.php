@@ -11,7 +11,7 @@ class ProductCard extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public $products)
+    public function __construct(public $products, public $favorites)
     {
         //
     }

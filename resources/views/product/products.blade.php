@@ -9,7 +9,7 @@
         @endforeach
     </ul>
 
-    <x-product-card :products="$products"/>
+    <x-product-card :products="$products" :favorites="$favorites"/>
     {{-- Lien de Pagination --}}
     {{ $products->links() }}
 

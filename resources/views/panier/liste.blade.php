@@ -34,6 +34,7 @@ liste panier
         @endforelse
         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
             <p class="text-sm leading-6 text-gray-900">Total: {{ $total }}</p>
+            <a href="" class="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-8 py-3 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Commander</a>
         </div>
     </ul> 
 
