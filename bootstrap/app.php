@@ -11,7 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        //il faut creer un middleware d exception
+        $middleware->validateCsrfTokens(except: [
+            '/commande/webhook',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

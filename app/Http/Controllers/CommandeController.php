@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Panier;
 use App\Models\Commande;
+use Stripe\StripeClient;
 use App\Models\CommandeItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -81,7 +82,7 @@ class CommandeController extends Controller
     public function stripeCheckout($total, $commandeId)
     {
         // parametrage de l'api 
-        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
         
         // url de confirmation de paiement
         $redirectUrl = route('commande.success') . '?session_id={CHECKOUT_SESSION_ID}';
@@ -90,6 +91,8 @@ class CommandeController extends Controller
         $response =  $stripe->checkout->sessions->create([
             'success_url' => $redirectUrl,
             'payment_method_types' => ['link', 'card'],
+            'customer_email' => auth()->user()->email,
+            'client_reference_id' => $commandeId,
             'line_items' => [
                 [
                     'price_data'  => [
@@ -97,7 +100,7 @@ class CommandeController extends Controller
                             'name' => $commandeId,
                         ],
                         'unit_amount'  => 100 * $total,
-                        'currency'     => 'USD',
+                        'currency'     => 'EUR',
                     ],
                     'quantity'    => 1
                 ],
@@ -112,9 +115,25 @@ class CommandeController extends Controller
 
     //controle et validation de la commande
     public function success(Request $request) {
-        dd($request);
-        return 'success';
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
 
+        $session = $stripe->checkout->sessions->retrieve($request->session_id);
+        // dd($session);
+        
+        //si la commande a bien ete payée
+        if($session->status == "complete"){
+            //on recherche le client
+            $commande = Commande::find($session->client_reference_id);
+            //on met a jour le numero de commande du client
+            $commande->update(['numero' => $session->payment_intent]);
+            $commande->save();
+            return view('commande.lister');
+        }
+
+    }
+    
+    public function webhook()  {
+        return 'ok';
     }
 
 
