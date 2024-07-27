@@ -14,7 +14,7 @@ class ProductController extends Controller
     {
         $categories = Category::all();
 
-        $products = Product::orderBy('id', 'desc')->paginate(8);
+        $products = Product::orderBy('id', 'asc')->paginate(8);
 
         $favorites = Favorite::where('user_id', auth()->user()->id)
         ->get();
